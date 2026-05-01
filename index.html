@@ -599,12 +599,12 @@ function layoutGallery(){
 }
 document.getElementById('photoOverlay').addEventListener('click',function(){this.classList.remove('active')});
 
-// === Starfield (decorative, always visible) ===
+// === Starfield ===
 let starsBuilt=false;
 function buildStarfield(){
   if(starsBuilt)return;starsBuilt=true;
   const sf=document.getElementById('starfield');
-  for(let i=0;i<50;i++){
+  for(let i=0;i<60;i++){
     const s=document.createElement('div');
     s.className='twinkle';
     s.style.left=Math.random()*100+'%';
@@ -616,88 +616,108 @@ function buildStarfield(){
   }
 }
 
-// === Fireworks ===
+// === Fireworks (new, robust + obvious) ===
 let fwAnimId=null, fwRun=false;
 function killFireworks(){
   fwRun=false;
   if(fwAnimId){cancelAnimationFrame(fwAnimId);fwAnimId=null;}
 }
+function sizeCanvas(){
+  const cvs=document.getElementById('fireworksCanvas');
+  if(!cvs)return null;
+  const W=window.innerWidth;
+  const H=window.innerHeight;
+  cvs.width=W;
+  cvs.height=H;
+  cvs.style.width=W+'px';
+  cvs.style.height=H+'px';
+  return {cvs,W,H};
+}
 function startFireworks(){
   buildStarfield();
   killFireworks();
   fwRun=true;
-  const cvs=document.getElementById('fireworksCanvas');
-  if(!cvs)return;
-  // Wait for page transition + layout
+  // Two-stage init: first call gets dimensions in case page just appeared
   setTimeout(()=>{
     if(!fwRun)return;
-    const W=cvs.clientWidth || window.innerWidth;
-    const H=cvs.clientHeight || window.innerHeight;
-    cvs.width=W;cvs.height=H;
+    const sz=sizeCanvas();
+    if(!sz)return;
+    const {cvs,W,H}=sz;
     const ctx=cvs.getContext('2d');
     if(!ctx)return;
     const ps=[],rs=[];
     function rand(a,b){return a+Math.random()*(b-a)}
     function launch(){
-      const hues=[340,15,45,200,280,320,50,170];
       rs.push({
-        x:rand(W*.1,W*.9),y:H+10,
+        x:rand(W*.1,W*.9),
+        y:H+8,
         ty:rand(H*.15,H*.5),
-        sp:rand(5,8),
-        h:hues[~~(Math.random()*hues.length)]
+        sp:rand(6,9),
+        h:[340,15,45,200,280,320,55,170,15,45][~~(Math.random()*10)]
       });
     }
     function explode(x,y,h){
-      const c=70+~~(Math.random()*30);
+      const c=80;
       for(let i=0;i<c;i++){
-        const a=(Math.PI*2/c)*i, s=rand(2,6.5);
+        const a=(Math.PI*2/c)*i + rand(-0.04,0.04);
+        const s=rand(2.5,7);
         ps.push({
           x,y,
           vx:Math.cos(a)*s,
           vy:Math.sin(a)*s,
           life:1,
-          dc:rand(.008,.018),
+          dc:rand(.007,.014),
           h:h+rand(-18,18)
         });
       }
     }
-    // Big opening burst
-    for(let i=0;i<4;i++) launch();
+    // Big opening: 5 simultaneous launches + immediate first explosion
+    for(let i=0;i<5;i++) launch();
+    explode(W*0.5, H*0.35, 340);
     let fr=0;
     function anim(){
-      if(!fwRun) return;
-      // Trail wash
-      ctx.globalCompositeOperation='source-over';
-      ctx.fillStyle='rgba(20,12,30,0.22)';
+      if(!fwRun)return;
+      // Soft trail (gentle)
+      ctx.fillStyle='rgba(20,12,30,0.12)';
       ctx.fillRect(0,0,W,H);
-      // Auto-launch
-      if(fr%18===0) launch();
-      if(fr<150 && fr%8===0) launch();
-      // Glow particles
-      ctx.globalCompositeOperation='lighter';
+      // Frequent launches
+      if(fr%15===0) launch();
+      if(fr<240 && fr%9===0) launch();
+      // Rockets
       for(let i=rs.length-1;i>=0;i--){
         const r=rs[i]; r.y-=r.sp;
         ctx.beginPath();
-        ctx.arc(r.x,r.y,3,0,Math.PI*2);
-        ctx.fillStyle=`hsl(${r.h},95%,70%)`;
+        ctx.arc(r.x,r.y,4,0,Math.PI*2);
+        ctx.fillStyle='#fff7e0';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(r.x,r.y,2.2,0,Math.PI*2);
+        ctx.fillStyle=`hsl(${r.h},100%,75%)`;
         ctx.fill();
         if(r.y<=r.ty){explode(r.x,r.y,r.h);rs.splice(i,1);}
       }
+      // Particles (BIG and obvious)
       for(let i=ps.length-1;i>=0;i--){
         const p=ps[i];
-        p.x+=p.vx; p.y+=p.vy; p.vy+=.05; p.life-=p.dc;
+        p.x+=p.vx; p.y+=p.vy; p.vy+=.04; p.life-=p.dc;
         if(p.life<=0){ps.splice(i,1);continue;}
-        const sz=2.6*Math.max(p.life,.25);
+        const sz=4*Math.max(p.life,.25);
+        // Outer glow
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,sz*1.6,0,Math.PI*2);
+        ctx.fillStyle=`hsla(${p.h},100%,65%,${p.life*0.35})`;
+        ctx.fill();
+        // Inner bright core
         ctx.beginPath();
         ctx.arc(p.x,p.y,sz,0,Math.PI*2);
-        ctx.fillStyle=`hsla(${p.h},92%,68%,${p.life})`;
+        ctx.fillStyle=`hsla(${p.h},100%,72%,${p.life})`;
         ctx.fill();
       }
       fr++;
       fwAnimId=requestAnimationFrame(anim);
     }
     anim();
-  },120);
+  },150);
 }
 window.addEventListener('resize',()=>{
   if(currentPage===WISH_PAGE){
@@ -760,10 +780,27 @@ document.querySelectorAll('.flame').forEach(fl=>{
   });
 });
 
-// Music — placeholder toggle
+// Music — birthday song
+const bgm=new Audio('music/birthday.mp3');
+bgm.loop=true;bgm.preload='auto';bgm.volume=0.6;
 let musicPlaying=false;
-function startMusic(){if(musicPlaying)return;musicPlaying=true;document.getElementById('musicBtn').classList.add('playing')}
-function stopMusic(){musicPlaying=false;document.getElementById('musicBtn').classList.remove('playing')}
+function startMusic(){
+  if(musicPlaying)return;
+  musicPlaying=true;
+  document.getElementById('musicBtn').classList.add('playing');
+  bgm.currentTime=0;
+  const p=bgm.play();
+  if(p&&p.catch){p.catch(()=>{
+    // Browsers often block autoplay until first user interaction
+    musicPlaying=false;
+    document.getElementById('musicBtn').classList.remove('playing');
+  });}
+}
+function stopMusic(){
+  musicPlaying=false;
+  document.getElementById('musicBtn').classList.remove('playing');
+  bgm.pause();
+}
 document.getElementById('musicBtn').addEventListener('click',()=>{musicPlaying?stopMusic():startMusic()});
 </script>
 </body>
