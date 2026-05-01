@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>姐姐 生日快乐</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pink:#ffb1c8;--pink-deep:#ff7ea8;--pink-light:#ffd4e2;--pink-pale:#fff0f5;
+  --peach:#ffd4b8;--peach-deep:#ffb591;--cream:#fff8ec;
+  --sage:#c8d8c0;--sky:#e0eaf3;
+  --gold:#e8c98c;--gold-deep:#d4ae6a;
+  --text-dark:#5a3e4a;--text-mid:#8b6b7a;--text-light:#b89aab;
+  --paper:#fffaf3;
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','PingFang SC',serif;background:var(--paper);color:var(--text-dark);-webkit-tap-highlight-color:transparent}
+.pages-container{width:100%;height:100%;overflow:hidden;position:relative}
+.page{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease;pointer-events:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.page.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.nav-hint{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-light);z-index:100;animation:bounce 2s infinite;pointer-events:none}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+/* COVER */
+.cover-bg{background:linear-gradient(165deg,#fff8ec 0%,#ffe8e0 35%,#ffd4d8 65%,#ffc8d8 100%);position:relative;overflow:hidden}
+.cover-bg::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 22% 30%,rgba(232,201,140,.28) 0%,transparent 50%),radial-gradient(circle at 78% 70%,rgba(255,177,200,.3) 0%,transparent 55%);animation:aurora 9s ease-in-out infinite}
+@keyframes aurora{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(4deg) scale(1.04)}}
+.petals{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.petal{position:absolute;width:12px;height:12px;border-radius:50% 0 50% 50%;opacity:0;animation:fall var(--dur) ease-in-out infinite;animation-delay:var(--delay)}
+@keyframes fall{0%{opacity:0;transform:translateY(-20px) rotate(0)}10%{opacity:.55}90%{opacity:.35}100%{opacity:0;transform:translateY(calc(100vh + 20px)) rotate(380deg)}}
+.cover-content{text-align:center;z-index:2;position:relative;padding:0 20px}
+.cover-emoji{font-size:62px;margin-bottom:18px;animation:float 3s ease-in-out infinite;display:inline-block}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.cover-title{font-family:'Ma Shan Zheng','ZCOOL XiaoWei',serif;font-size:46px;background:linear-gradient(135deg,var(--pink-deep),#ff8a8a,var(--gold-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;letter-spacing:6px;line-height:1.1}
+.cover-sub{font-size:17px;color:var(--pink-deep);letter-spacing:2px;margin-bottom:28px;font-weight:500;line-height:1.8}
+.cover-name{font-size:20px;color:var(--text-mid);font-weight:600;letter-spacing:4px;margin-top:8px}
+.cover-date{margin-top:8px;font-size:13px;color:var(--text-light);letter-spacing:3px}
+.tap-start{margin-top:36px;padding:13px 34px;background:linear-gradient(135deg,var(--pink),var(--gold));border:none;border-radius:30px;color:#fff;font-size:15px;font-family:inherit;cursor:pointer;animation:pulse 2s ease-in-out infinite;box-shadow:0 4px 22px rgba(255,126,168,.4);letter-spacing:2px}
+@keyframes pulse{0%,100%{box-shadow:0 4px 22px rgba(255,126,168,.4)}50%{box-shadow:0 4px 32px rgba(255,126,168,.6)}}
+
+.section-title{font-family:'Ma Shan Zheng','ZCOOL XiaoWei',serif;font-size:26px;color:var(--pink-deep);margin-bottom:18px;letter-spacing:3px;text-align:center}
+.section-sub{font-size:13px;color:var(--text-light);margin-bottom:18px;letter-spacing:1px;text-align:center}
+
+/* STATS */
+.stats-bg{background:linear-gradient(180deg,#fff8ec,#fff0f5)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:380px}
+.stat-card{background:rgba(255,255,255,.85);border:1px solid var(--pink-light);border-radius:18px;padding:16px 12px;text-align:center;box-shadow:0 4px 16px rgba(255,126,168,.1);opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;position:relative;overflow:hidden}
+.stat-card.show{opacity:1;transform:translateY(0)}
+.stat-card::before{content:'';position:absolute;top:-30px;right:-30px;width:60px;height:60px;background:radial-gradient(circle,var(--pink-pale),transparent);opacity:.6}
+.stat-number{font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--pink-deep),var(--gold-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;position:relative}
+.stat-label{font-size:12px;color:var(--text-mid);margin-top:6px;letter-spacing:1px;position:relative}
+.stat-card.wide{grid-column:1/-1;background:linear-gradient(135deg,#fff8ec,#fff0f5)}
+.stat-card.wide .stat-number{font-size:18px;letter-spacing:1px}
+.stat-card.tiny .stat-number{font-size:22px}
+
+/* TIMELINE */
+.timeline-bg{background:linear-gradient(180deg,#fff0f5,#fff8ec)}
+.timeline-wrap{width:100%;max-width:360px;position:relative;padding-left:24px}
+.timeline-wrap::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--pink),var(--gold));border-radius:1px;opacity:.5}
+.tl-item{position:relative;padding:8px 0 8px 16px;opacity:0;transform:translateX(-15px);transition:opacity .5s ease,transform .5s ease}
+.tl-item.show{opacity:1;transform:translateX(0)}
+.tl-item::before{content:'';position:absolute;left:-22px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--pink-deep);box-shadow:0 0 0 3px var(--pink-pale);}
+.tl-time{font-size:12px;color:var(--pink-deep);font-weight:600;letter-spacing:1px}
+.tl-text{font-size:14px;color:var(--text-dark);line-height:1.7;margin-top:3px}
+.tl-text em{color:var(--gold-deep);font-style:normal;font-weight:600}
+
+/* KEYWORDS */
+.keywords-bg{background:linear-gradient(180deg,#fff8ec,#fff0f5)}
+.keyword-list{width:100%;max-width:340px;display:flex;flex-direction:column;gap:11px}
+.keyword-row{display:flex;align-items:center;gap:10px;opacity:0;transform:translateX(-20px);transition:opacity .4s ease,transform .4s ease}
+.keyword-row.show{opacity:1;transform:translateX(0)}
+.keyword-word{font-size:14px;min-width:64px;text-align:right;color:var(--pink-deep);font-weight:600;white-space:nowrap}
+.keyword-bar-container{flex:1;height:22px;background:var(--pink-pale);border-radius:11px;overflow:hidden}
+.keyword-bar{height:100%;border-radius:11px;background:linear-gradient(90deg,var(--pink),var(--gold));transition:width 1.2s ease;width:0}
+.keyword-count{font-size:12px;color:var(--text-light);min-width:32px}
+
+/* CHAT */
+.chat-bg{background:linear-gradient(180deg,#fff0f5,#fff8ec)}
+.chat-bubbles{width:100%;max-width:360px;display:flex;flex-direction:column;gap:8px}
+.bubble{max-width:78%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;opacity:0;transform:translateY(15px);transition:opacity .5s ease,transform .5s ease;position:relative}
+.bubble.show{opacity:1;transform:translateY(0)}
+.bubble.left{align-self:flex-start;background:#fff;border:1px solid var(--pink-light);border-bottom-left-radius:4px;color:var(--text-dark)}
+.bubble.right{align-self:flex-end;background:linear-gradient(135deg,#ffc8db,#ffd4b8);border-bottom-right-radius:4px;color:#fff}
+.bubble-name{font-size:11px;color:var(--text-light);margin-bottom:3px}
+.bubble.right .bubble-name{color:rgba(255,255,255,.8)}
+.bubble-date{font-size:10px;color:var(--text-light);text-align:center;margin:6px 0;align-self:center;background:var(--pink-pale);padding:3px 12px;border-radius:10px;opacity:0;transform:translateY(15px);transition:opacity .5s ease,transform .5s ease;letter-spacing:1px}
+.bubble-date.show{opacity:1;transform:translateY(0)}
+
+/* GALLERY */
+.gallery-bg{background:linear-gradient(180deg,#fff8ec,#fff0f5)}
+.gallery-wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:340px;margin:10px auto;padding:0 10px}
+.gallery-photo{width:100px;height:130px;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(255,126,168,.25);border:3px solid #fff;cursor:pointer;flex-shrink:0;transition:transform .3s ease}
+.gallery-photo:hover{transform:translateY(-4px) rotate(-1deg)}
+.gallery-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-quote{margin-top:18px;font-size:14px;color:var(--pink-deep);text-align:center;font-weight:500;letter-spacing:1px;line-height:1.8;max-width:300px}
+.photo-overlay{position:fixed;inset:0;background:rgba(40,20,30,.85);z-index:300;display:none;align-items:center;justify-content:center}
+.photo-overlay.active{display:flex}
+.photo-overlay img{max-width:92vw;max-height:88vh;border-radius:12px;box-shadow:0 12px 50px rgba(0,0,0,.5)}
+
+/* TOGETHER (today's story) */
+.story-bg{background:linear-gradient(180deg,#fff0f5,#fff8ec)}
+.story-card{max-width:340px;background:rgba(255,255,255,.85);border:1px solid var(--pink-light);border-radius:20px;padding:22px 22px;box-shadow:0 6px 22px rgba(255,126,168,.12)}
+.story-text{font-size:14.5px;line-height:2;color:var(--text-dark);letter-spacing:.5px}
+.story-text em{color:var(--pink-deep);font-style:normal;font-weight:600}
+.story-text strong{color:var(--gold-deep);font-weight:600}
+
+/* POEM */
+.poem-bg{background:linear-gradient(160deg,#fff8ec,#fff0f5,#ffe8e0)}
+.poem-box{max-width:340px;background:rgba(255,255,255,.78);border:1px solid var(--pink-light);border-radius:22px;padding:26px 24px;box-shadow:0 6px 22px rgba(255,126,168,.12);text-align:center;backdrop-filter:blur(8px)}
+.poem-text{font-size:15px;line-height:2.3;color:var(--text-dark);letter-spacing:1.5px;font-family:'Noto Serif SC',serif}
+.poem-sign{margin-top:18px;font-size:13px;color:var(--text-light);letter-spacing:2px;font-style:italic}
+
+/* CAKE */
+.cake-bg{background:linear-gradient(160deg,#fff8ec,#fff0f5,#ffe4ef)}
+.cake-area{text-align:center;margin-top:12px;position:relative}
+.candle-hint{font-size:13px;color:var(--text-mid);margin-bottom:10px;animation:bounce 2s infinite}
+.cake-body{display:inline-block;position:relative}
+.candles{display:flex;justify-content:center;gap:22px;margin-bottom:-2px;position:relative;z-index:2}
+.candle{display:flex;flex-direction:column;align-items:center}
+.candle-stick{width:6px;height:30px;background:linear-gradient(180deg,#ffd9a3,#ff9d6e);border-radius:3px}
+.flame{width:11px;height:18px;background:radial-gradient(ellipse at center bottom,#fff 0%,#ffd26a 30%,#ff8a00 60%,#ff5e00 100%);border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;margin-bottom:2px;animation:flicker .3s ease-in-out infinite alternate;cursor:pointer;transition:opacity .5s,transform .5s}
+.flame.out{opacity:0;transform:scale(0) translateY(-12px);pointer-events:none}
+@keyframes flicker{0%{transform:scaleX(1) scaleY(1) rotate(-2deg)}100%{transform:scaleX(.85) scaleY(1.1) rotate(2deg)}}
+.flame-smoke{position:absolute;width:4px;height:4px;background:rgba(180,180,180,.6);border-radius:50%;animation:smokeUp 1s ease-out forwards;pointer-events:none}
+@keyframes smokeUp{0%{opacity:.8;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-32px) scale(2.5)}}
+.cake-top{width:120px;height:18px;background:linear-gradient(180deg,#fff5f0,#ffc8db);border-radius:10px 10px 0 0;margin:0 auto;position:relative}
+.cake-top::before{content:'';position:absolute;top:3px;left:10px;right:10px;height:4px;background:repeating-linear-gradient(90deg,#ff7ea8,#ff7ea8 6px,transparent 6px,transparent 12px);border-radius:2px}
+.cake-mid{width:130px;height:30px;background:linear-gradient(180deg,#ffe4ef,#ffd4b8);margin:0 auto;border-left:2px solid rgba(255,255,255,.5);border-right:2px solid rgba(255,255,255,.5);position:relative}
+.cake-mid::before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:120px;height:3px;background:linear-gradient(90deg,#e8c98c,#ff7ea8,#e8c98c);margin-top:13px;border-radius:2px}
+.cake-bottom{width:140px;height:24px;background:linear-gradient(180deg,#ffd4b8,#ffc8db);border-radius:0 0 12px 12px;margin:0 auto;box-shadow:0 6px 16px rgba(255,126,168,.25)}
+.wish-stars{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.wish-star{position:absolute;font-size:18px;animation:wishFloat 2s ease-out forwards;pointer-events:none}
+@keyframes wishFloat{0%{opacity:1;transform:translateY(0) scale(0)}30%{opacity:1;transform:translateY(-20px) scale(1.2)}100%{opacity:0;transform:translateY(-80px) scale(.5)}}
+.wish-text-pop{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;font-size:15px;color:var(--pink-deep);font-weight:700;opacity:0;letter-spacing:2px;white-space:nowrap;animation:wishPop 2s ease-out forwards;animation-delay:.5s}
+@keyframes wishPop{0%{opacity:0;transform:translateX(-50%) scale(.5)}40%{opacity:1;transform:translateX(-50%) scale(1.1)}100%{opacity:1;transform:translateX(-50%) scale(1)}}
+
+/* WISH */
+.wish-bg{background:linear-gradient(160deg,#fff8ec,#ffe4d8,#ffd1d8,#ffc8d8);position:relative;overflow:hidden}
+.fireworks-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.wish-content{z-index:2;text-align:center;position:relative;padding:0 20px}
+.wish-cake{font-size:68px;margin-bottom:14px;animation:float 3s ease-in-out infinite}
+.wish-text{font-family:'Ma Shan Zheng','ZCOOL XiaoWei',serif;font-size:34px;background:linear-gradient(135deg,var(--pink-deep),#ff8a8a,var(--gold-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:6px;margin-bottom:18px;line-height:1.1}
+.wish-message{font-size:14.5px;line-height:2.1;color:var(--text-dark);max-width:320px;margin:0 auto;letter-spacing:.5px}
+.wish-from{margin-top:26px;font-size:14px;color:var(--text-mid);letter-spacing:3px}
+.wish-date{margin-top:6px;font-size:12px;color:var(--text-light);letter-spacing:2px}
+
+.music-btn{position:fixed;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--pink-light);background:rgba(255,255,255,.7);color:var(--pink-deep);font-size:16px;cursor:pointer;z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.music-btn.playing{animation:spin 3s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.page-dots{position:fixed;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:100}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--pink-pale);transition:all .3s;cursor:pointer}
+.dot.active{background:var(--pink-deep);height:16px;border-radius:3px}
+
+/* tiny avatar accents */
+.av-mini{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.1);object-fit:cover;vertical-align:middle;margin:0 4px}
+</style>
+</head>
+<body>
+<button class="music-btn" id="musicBtn" title="音乐">&#9835;</button>
+<div class="page-dots" id="pageDots"></div>
+<div class="photo-overlay" id="photoOverlay"><img id="overlayImg" src="" alt=""/></div>
+
+<div class="pages-container" id="pagesContainer">
+
+  <!-- 0: Cover -->
+  <div class="page cover-bg active" data-page="0">
+    <div class="petals" id="petals"></div>
+    <div class="cover-content">
+      <div class="cover-emoji">🎂</div>
+      <div class="cover-title">生日快乐</div>
+      <div class="cover-sub">写给我的姐姐 · 王雨</div>
+      <div class="cover-name">— To 姐姐 —</div>
+      <div class="cover-date">2026.05.01</div>
+      <button class="tap-start" id="startBtn">✨ 点开看看 ✨</button>
+    </div>
+  </div>
+
+  <!-- 1: Today Stats -->
+  <div class="page stats-bg" data-page="1">
+    <div class="section-title">❤️ 今天，是属于姐姐的一天</div>
+    <div class="section-sub">2026.05.01 · 我们一起度过的这一天</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-number">52</div><div class="stat-label">条消息</div></div>
+      <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">通真正接通的电话</div></div>
+      <div class="stat-card tiny"><div class="stat-number">4 时 9 分</div><div class="stat-label">通话时长</div></div>
+      <div class="stat-card"><div class="stat-number">9</div><div class="stat-label">张照片</div></div>
+      <div class="stat-card"><div class="stat-number">00:01:05</div><div class="stat-label">第一句"生日快乐"的时间</div></div>
+      <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">个表情包</div></div>
+      <div class="stat-card wide"><div class="stat-number">"我自己都忘记了"</div><div class="stat-label">姐姐说的，让人又心疼又想笑</div></div>
+    </div>
+  </div>
+
+  <!-- 2: Timeline -->
+  <div class="page timeline-bg" data-page="2">
+    <div class="section-title">⏳ 这一天，是这样过的</div>
+    <div class="section-sub">我把今天的每一刻都记下来了</div>
+    <div class="timeline-wrap" id="timelineWrap">
+      <div class="tl-item"><div class="tl-time">00:01</div><div class="tl-text">我抢着发了第一句 <em>"生日快乐"</em>，那时候你还在赶论文</div></div>
+      <div class="tl-item"><div class="tl-time">00:13</div><div class="tl-text">你回："谢谢小黄！！！我刚交完～<em>晚晚 💤</em>"<br>"我自己都忘记了"</div></div>
+      <div class="tl-item"><div class="tl-time">15:23</div><div class="tl-text">我："姐姐~"<br>(没回，我猜你还在补觉)</div></div>
+      <div class="tl-item"><div class="tl-time">16:13</div><div class="tl-text">你说："o，睡太晚了，我刚醒"<br>新的一岁，从一觉好眠开始 ☁️</div></div>
+      <div class="tl-item"><div class="tl-time">17:54</div><div class="tl-text">你把答辩稿发给了我，<br>这一天，我们一起 <em>降 AI、改语序、抠字眼</em></div></div>
+      <div class="tl-item"><div class="tl-time">18:07</div><div class="tl-text">第一通电话 <strong>1 小时 22 分钟</strong><br>有点像在替你紧张</div></div>
+      <div class="tl-item"><div class="tl-time">20:36</div><div class="tl-text">把改好的稿子发给你，附了一份对照表，<br>心想：<em>姐姐答辩一定顺顺利利</em></div></div>
+      <div class="tl-item"><div class="tl-time">21:02</div><div class="tl-text">第二通电话 <strong>2 小时 9 分钟</strong><br>我们什么都聊，什么都不急着挂</div></div>
+      <div class="tl-item"><div class="tl-time">21:32</div><div class="tl-text">你发来车里的照片，<br>头发好长，今天的衣服也好看</div></div>
+      <div class="tl-item"><div class="tl-time">22:50</div><div class="tl-text">[表情包] —— 一切尽在不言中<br>这一天还没结束，姐姐的好日子才刚开始</div></div>
+    </div>
+  </div>
+
+  <!-- 3: Keywords -->
+  <div class="page keywords-bg" data-page="3">
+    <div class="section-title">💬 我们的高频词</div>
+    <div class="section-sub">从聊天里翻出来的小宝贝</div>
+    <div class="keyword-list" id="keywordList"></div>
+  </div>
+
+  <!-- 4: Chat moments -->
+  <div class="page chat-bg" data-page="4">
+    <div class="section-title">💌 那些被记下来的瞬间</div>
+    <div class="chat-bubbles" id="chatBubbles">
+      <div class="bubble-date">2026-05-01 · 00:01</div>
+      <div class="bubble right"><div class="bubble-name">小黄</div>生日快乐</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>谢谢小黄！！！</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>我刚交完～晚晚💤</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>我自己都忘记了</div>
+      <div class="bubble-date">15:23</div>
+      <div class="bubble right"><div class="bubble-name">小黄</div>姐姐~</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>o，睡太晚了，我刚醒</div>
+      <div class="bubble-date">18:48</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>我都试一下</div>
+      <div class="bubble right"><div class="bubble-name">小黄</div>不用 thinking</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>好o</div>
+      <div class="bubble left"><div class="bubble-name">姐姐</div>刚吃完饭～</div>
+      <div class="bubble-date">21:58</div>
+      <div class="bubble right"><div class="bubble-name">小黄</div>姐姐~</div>
+      <div class="bubble right"><div class="bubble-name">小黄</div>姐姐挂了吗</div>
+    </div>
+  </div>
+
+  <!-- 5: Today story -->
+  <div class="page story-bg" data-page="5">
+    <div class="section-title">🕊️ 写给姐姐</div>
+    <div class="section-sub">关于今天，我想多说几句</div>
+    <div class="story-card">
+      <div class="story-text">
+        姐姐，<br>
+        你昨晚熬到凌晨才把论文交上去，<br>
+        累到把<em>自己的生日</em>都忘了。<br><br>
+        我比你更早记得，<br>
+        在 <strong>00 点 01 分</strong>，<br>
+        把第一句"生日快乐"递给你。<br><br>
+        然后这一整天，<br>
+        我们一起改答辩稿、降 AI、来回打了 <strong>四个多小时</strong>的电话。<br>
+        你说一句"我都试一下"，<br>
+        我心里就觉得，姐姐你真的好认真。<br><br>
+        所以这份生日礼物，<br>
+        不是花、不是蛋糕、不是奶茶，<br>
+        是这一天，被我<em>悄悄留下来的样子</em>。
+      </div>
+    </div>
+  </div>
+
+  <!-- 6: Gallery -->
+  <div class="page gallery-bg" data-page="6">
+    <div class="section-title">📷 今天的姐姐</div>
+    <div class="section-sub">车里偷拍的小片段，长发、米色、一点点光</div>
+    <div class="gallery-wrap" id="galleryWrap">
+      <div class="gallery-photo" data-idx="0"><img src="photos/p1.jpg" alt=""/></div>
+      <div class="gallery-photo" data-idx="1"><img src="photos/p2.jpg" alt=""/></div>
+    </div>
+    <div class="gallery-quote">
+      "姐姐今天的发尾，<br>比平时多了一点点光。"
+    </div>
+  </div>
+
+  <!-- 7: Poem to 姐姐 -->
+  <div class="page poem-bg" data-page="7">
+    <div class="section-title">📜 致姐姐</div>
+    <div class="poem-box">
+      <div class="poem-text">
+        春末初夏，五月一日，<br>
+        姐姐生辰，宜慢宜缓。<br>
+        论文方就，倦极忘日，<br>
+        我于零点，先报喜安。<br><br>
+        晨昏颠倒，午后才眠，<br>
+        电波两端，话长情短。<br>
+        改稿到深，降 AI 一遍，<br>
+        姐姐认真，我替她忙。<br><br>
+        一日五通，四时倾谈，<br>
+        相识虽浅，已是常伴。<br>
+        愿姐姐答辩，前程坦坦，<br>
+        愿往后岁岁，皆有人陪。
+      </div>
+      <div class="poem-sign">—— 小黄 写于 2026.05.01</div>
+    </div>
+  </div>
+
+  <!-- 8: Wishes & Cake -->
+  <div class="page cake-bg" data-page="8">
+    <div class="section-title">🎁 送给姐姐的祝福</div>
+    <div class="poem-box" style="margin-bottom:14px;max-width:320px">
+      <div class="poem-text" style="font-size:14.5px;line-height:2.1;text-align:center;letter-spacing:1px">
+        姐姐，今天是属于你的日子，<br>
+        我把所有温柔都打包送你 🎀<br><br>
+        🌷 愿你新的一岁<br>
+        论文顺利，答辩顺利<br>
+        前程似锦，万事胜意<br><br>
+        🍰 愿你吃饭饭按时<br>
+        睡得早，醒得好<br>
+        身体要乖，心也要乖<br><br>
+        🌟 愿你被宠、被爱、被好好对待<br>
+        而我也会一直在，<br>
+        当你的小黄、当你的小弟弟。
+      </div>
+    </div>
+    <div class="cake-area" id="cakeArea">
+      <div class="candle-hint" id="candleHint">👉 点击蜡烛，替姐姐许个愿</div>
+      <div class="cake-body">
+        <div class="candles" id="candles">
+          <div class="candle"><div class="flame" data-c="0"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" data-c="1"></div><div class="candle-stick"></div></div>
+          <div class="candle"><div class="flame" data-c="2"></div><div class="candle-stick"></div></div>
+        </div>
+        <div class="cake-top"></div>
+        <div class="cake-mid"></div>
+        <div class="cake-bottom"></div>
+      </div>
+      <div class="wish-stars" id="wishStars"></div>
+    </div>
+  </div>
+
+  <!-- 9: Final Wish -->
+  <div class="page wish-bg" data-page="9">
+    <canvas class="fireworks-canvas" id="fireworksCanvas"></canvas>
+    <div class="wish-content">
+      <div class="wish-cake">🎂</div>
+      <div class="wish-text">生日快乐</div>
+      <div class="wish-message">
+        姐姐，<br><br>
+        今天的 52 条消息、5 通电话、<br>
+        4 小时 9 分钟的语音，<br>
+        都是这一年里，我对你说过的"我在"。<br><br>
+        以后的日子里，<br>
+        论文也好，烦心事也好，<br>
+        都别一个人扛。<br><br>
+        随时找我，<br>
+        我永远是<strong>你的小黄</strong>。
+      </div>
+      <div class="wish-from">— 小黄 —</div>
+      <div class="wish-date">2026.05.01</div>
+    </div>
+  </div>
+
+</div>
+<div class="nav-hint" id="navHint">↑ 上滑翻页 ↑</div>
+
+<script>
+const pages=document.querySelectorAll('.page'),totalPages=pages.length;
+let currentPage=0,isTransitioning=false;
+const dotsC=document.getElementById('pageDots');
+for(let i=0;i<totalPages;i++){const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.addEventListener('click',()=>goToPage(i));dotsC.appendChild(d)}
+function updateDots(){dotsC.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===currentPage))}
+function goToPage(n){
+  if(n<0||n>=totalPages||n===currentPage||isTransitioning)return;
+  isTransitioning=true;const dir=n>currentPage?1:-1;
+  pages[currentPage].classList.remove('active');
+  pages[currentPage].style.transform=dir>0?'translateY(-40px)':'translateY(40px)';
+  pages[currentPage].style.opacity='0';
+  currentPage=n;pages[currentPage].classList.add('active');
+  pages[currentPage].style.opacity='1';pages[currentPage].style.transform='translateY(0)';
+  updateDots();onPageEnter(currentPage);
+  document.getElementById('navHint').style.display='';
+  setTimeout(()=>{isTransitioning=false},800);
+}
+
+let touchStartY=0,touchStartX=0;
+document.addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY;touchStartX=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{const dy=touchStartY-e.changedTouches[0].clientY,dx=touchStartX-e.changedTouches[0].clientX;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>50){dy>0?goToPage(currentPage+1):goToPage(currentPage-1)}},{passive:true});
+let wheelLock=false;
+document.addEventListener('wheel',e=>{if(wheelLock)return;if(e.deltaY>30){wheelLock=true;goToPage(currentPage+1);setTimeout(()=>wheelLock=false,800)}else if(e.deltaY<-30){wheelLock=true;goToPage(currentPage-1);setTimeout(()=>wheelLock=false,800)}},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key===' ')goToPage(currentPage+1);if(e.key==='ArrowUp')goToPage(currentPage-1)});
+document.getElementById('startBtn').addEventListener('click',()=>{goToPage(1);startMusic()});
+
+// Petals
+const petalsEl=document.getElementById('petals');
+['#ffb6d3','#e8c98c','#ffcba4','#ffb591','#fff0f5'].forEach(c=>{for(let i=0;i<4;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.setProperty('--dur',(6+Math.random()*6)+'s');p.style.setProperty('--delay',Math.random()*7+'s');p.style.background=c;const sz=8+Math.random()*9;p.style.width=sz+'px';p.style.height=sz+'px';petalsEl.appendChild(p)}});
+
+function onPageEnter(pg){
+  if(pg===1)animateStats();
+  if(pg===2)animateTimeline();
+  if(pg===3)animateKeywords();
+  if(pg===4)animateBubbles();
+  if(pg===6)layoutGallery();
+  if(pg===9)startFireworks();
+}
+
+function animateStats(){pages[1].querySelectorAll('.stat-card').forEach((c,i)=>{c.classList.remove('show');setTimeout(()=>c.classList.add('show'),i*120)})}
+function animateTimeline(){pages[2].querySelectorAll('.tl-item').forEach((c,i)=>{c.classList.remove('show');setTimeout(()=>c.classList.add('show'),i*120)})}
+
+const keywords=[{word:'姐姐~',count:18},{word:'好/好哒',count:12},{word:'语音通话',count:10},{word:'嗯嗯~',count:6},{word:'谢谢小黄',count:3},{word:'表情包',count:3},{word:'答辩稿',count:3},{word:'刚醒/刚交',count:2},{word:'我都试一下',count:1},{word:'我自己都忘记了',count:1}];
+function animateKeywords(){
+  const list=document.getElementById('keywordList');
+  if(list.children.length>0){
+    list.querySelectorAll('.keyword-row').forEach((r,i)=>{r.classList.remove('show');setTimeout(()=>r.classList.add('show'),i*80)});
+    setTimeout(()=>{list.querySelectorAll('.keyword-bar').forEach(b=>{b.style.width=b.dataset.width})},250);
+    return;
+  }
+  const mx=keywords[0].count;
+  keywords.forEach((kw,i)=>{const row=document.createElement('div');row.className='keyword-row';const w=document.createElement('span');w.className='keyword-word';w.textContent=kw.word;const bc=document.createElement('div');bc.className='keyword-bar-container';const b=document.createElement('div');b.className='keyword-bar';b.dataset.width=Math.max(8,kw.count/mx*100)+'%';bc.appendChild(b);const c=document.createElement('span');c.className='keyword-count';c.textContent=kw.count;row.appendChild(w);row.appendChild(bc);row.appendChild(c);list.appendChild(row);setTimeout(()=>row.classList.add('show'),i*100)});
+  setTimeout(()=>{list.querySelectorAll('.keyword-bar').forEach(b=>{b.style.width=b.dataset.width})},400);
+}
+
+function animateBubbles(){pages[4].querySelectorAll('.bubble,.bubble-date').forEach((b,i)=>{b.classList.remove('show');setTimeout(()=>b.classList.add('show'),i*140)})}
+
+let galleryDone=false;
+function layoutGallery(){
+  if(galleryDone)return;galleryDone=true;
+  document.querySelectorAll('.gallery-photo').forEach(el=>{
+    el.addEventListener('click',()=>{
+      document.getElementById('overlayImg').src=el.querySelector('img').src;
+      document.getElementById('photoOverlay').classList.add('active');
+    });
+  });
+}
+document.getElementById('photoOverlay').addEventListener('click',function(){this.classList.remove('active')});
+
+let fwRun=false;
+function startFireworks(){
+  if(fwRun)return;fwRun=true;
+  const cvs=document.getElementById('fireworksCanvas'),ctx=cvs.getContext('2d');
+  cvs.width=cvs.offsetWidth*2;cvs.height=cvs.offsetHeight*2;ctx.scale(2,2);
+  const W=cvs.offsetWidth,H=cvs.offsetHeight,ps=[],rs=[];
+  function rand(a,b){return a+Math.random()*(b-a)}
+  function launch(){const hues=[340,350,15,30,45,200];rs.push({x:rand(W*.2,W*.8),y:H,ty:rand(H*.1,H*.4),sp:rand(3,5),h:hues[~~(Math.random()*hues.length)]})}
+  function explode(x,y,h){const c=40+~~(Math.random()*30);for(let i=0;i<c;i++){const a=(Math.PI*2/c)*i,s=rand(1,4);ps.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,dc:rand(.01,.025),h:h+rand(-15,15),sz:rand(1,3)})}}
+  let fr=0;
+  (function anim(){
+    ctx.globalCompositeOperation='source-over';ctx.fillStyle='rgba(255,248,236,0.18)';ctx.fillRect(0,0,W,H);
+    if(fr%40===0||(fr<60&&fr%15===0))launch();
+    for(let i=rs.length-1;i>=0;i--){const r=rs[i];r.y-=r.sp;ctx.beginPath();ctx.arc(r.x,r.y,2,0,Math.PI*2);ctx.fillStyle=`hsl(${r.h},90%,60%)`;ctx.fill();if(r.y<=r.ty){explode(r.x,r.y,r.h);rs.splice(i,1)}}
+    for(let i=ps.length-1;i>=0;i--){const p=ps[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.life-=p.dc;if(p.life<=0){ps.splice(i,1);continue}ctx.beginPath();ctx.arc(p.x,p.y,p.sz*p.life,0,Math.PI*2);ctx.fillStyle=`hsla(${p.h},85%,60%,${p.life})`;ctx.fill()}
+    fr++;requestAnimationFrame(anim);
+  })();
+}
+
+// Candle blow interaction
+let candlesOut=0;
+document.querySelectorAll('.flame').forEach(fl=>{
+  fl.addEventListener('click',function(){
+    if(this.classList.contains('out'))return;
+    this.classList.add('out');
+    const rect=this.getBoundingClientRect();
+    const area=document.getElementById('cakeArea');
+    const areaRect=area.getBoundingClientRect();
+    for(let i=0;i<3;i++){
+      const smoke=document.createElement('div');
+      smoke.className='flame-smoke';
+      smoke.style.left=(rect.left-areaRect.left+3+Math.random()*4)+'px';
+      smoke.style.top=(rect.top-areaRect.top)+'px';
+      smoke.style.animationDelay=(i*0.15)+'s';
+      area.appendChild(smoke);
+      setTimeout(()=>smoke.remove(),1200);
+    }
+    candlesOut++;
+    if(candlesOut>=3){
+      document.getElementById('candleHint').textContent='';
+      setTimeout(()=>{
+        const stars=document.getElementById('wishStars');
+        const emojis=['✨','🌟','💖','🎀','🧁','💫','🎉','🎈','🌷'];
+        for(let i=0;i<18;i++){
+          setTimeout(()=>{
+            const s=document.createElement('div');
+            s.className='wish-star';
+            s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+            s.style.left=(10+Math.random()*80)+'%';
+            s.style.top=(20+Math.random()*60)+'%';
+            s.style.fontSize=(14+Math.random()*14)+'px';
+            stars.appendChild(s);
+            setTimeout(()=>s.remove(),2500);
+          },i*140);
+        }
+        const txt=document.createElement('div');
+        txt.className='wish-text-pop';
+        txt.textContent='🎂 愿姐姐所求皆所愿 🎂';
+        document.getElementById('cakeArea').appendChild(txt);
+      },400);
+    }
+  });
+});
+
+// Music — gentle silence, just a button toggle (no asset committed)
+let musicPlaying=false;
+function startMusic(){if(musicPlaying)return;musicPlaying=true;document.getElementById('musicBtn').classList.add('playing')}
+function stopMusic(){musicPlaying=false;document.getElementById('musicBtn').classList.remove('playing')}
+document.getElementById('musicBtn').addEventListener('click',()=>{musicPlaying?stopMusic():startMusic()});
+</script>
+</body>
+</html>
