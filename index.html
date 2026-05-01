@@ -176,18 +176,23 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','Pi
     </div>
   </div>
 
-  <!-- 1: Today Stats -->
+  <!-- 1: Stats — 全部聊天记录的数据 -->
   <div class="page stats-bg" data-page="1">
-    <div class="section-title">❤️ 今天，是属于姐姐的一天</div>
-    <div class="section-sub">2026.05.01 · 我们一起度过的这一天</div>
+    <div class="section-title">❤️ 我们的全部数据</div>
+    <div class="section-sub">从 00:01 到 22:50 · 22 时 49 分</div>
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-number">52</div><div class="stat-label">条消息</div></div>
-      <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">通真正接通的电话</div></div>
-      <div class="stat-card tiny"><div class="stat-number">4 时 9 分</div><div class="stat-label">通话时长</div></div>
-      <div class="stat-card"><div class="stat-number">9</div><div class="stat-label">张照片</div></div>
-      <div class="stat-card"><div class="stat-number">00:01:05</div><div class="stat-label">第一句"生日快乐"的时间</div></div>
+      <div class="stat-card"><div class="stat-number">28 / 24</div><div class="stat-label">小黄发的 / 姐姐发的</div></div>
+      <div class="stat-card"><div class="stat-number">15</div><div class="stat-label">条纯文字</div></div>
+      <div class="stat-card"><div class="stat-number">17</div><div class="stat-label">张图片</div></div>
+      <div class="stat-card tiny"><div class="stat-number">9 / 8</div><div class="stat-label">姐姐发 / 小黄发</div></div>
+      <div class="stat-card"><div class="stat-number">5</div><div class="stat-label">个文件</div></div>
       <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">个表情包</div></div>
-      <div class="stat-card wide"><div class="stat-number">"我自己都忘记了"</div><div class="stat-label">姐姐说的，让人又心疼又想笑</div></div>
+      <div class="stat-card"><div class="stat-number">10</div><div class="stat-label">次通话尝试</div></div>
+      <div class="stat-card tiny"><div class="stat-number">5 通</div><div class="stat-label">真正接通的电话</div></div>
+      <div class="stat-card tiny"><div class="stat-number">4 时 9 分 29 秒</div><div class="stat-label">总通话时长</div></div>
+      <div class="stat-card wide"><div class="stat-number">00:01:05</div><div class="stat-label">第一句"生日快乐"的时间 — 我赢了 ✨</div></div>
+      <div class="stat-card wide"><div class="stat-number">"我自己都忘记了"</div><div class="stat-label">姐姐 · 凌晨刚交完论文时</div></div>
     </div>
   </div>
 
@@ -212,7 +217,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','Pi
   <!-- 3: Keywords -->
   <div class="page keywords-bg" data-page="3">
     <div class="section-title">💬 我们的高频词</div>
-    <div class="section-sub">从聊天里翻出来的小宝贝</div>
+    <div class="section-sub">52 条消息里，最常出现的几个</div>
     <div class="keyword-list" id="keywordList"></div>
   </div>
 
@@ -302,10 +307,12 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','Pi
     <div class="section-title">🎁 送给姐姐的祝福</div>
     <div class="poem-box" style="margin-bottom:14px;max-width:320px">
       <div class="poem-text" style="font-size:14.5px;line-height:2.1;text-align:center;letter-spacing:1px">
-        姐姐，今天是属于你的日子，<br>
-        我把所有温柔都打包送你 🎀<br><br>
+        姐姐，今天 <em>52 条消息</em>、<em>17 张图片</em>、<br>
+        <em>5 个文件</em>、<em>3 个表情包</em>，<br>
+        <em>5 通电话 4 时 9 分 29 秒</em> ——<br>
+        全是属于你的小宇宙。<br><br>
         🌷 愿你新的一岁<br>
-        论文顺利，答辩顺利<br>
+        答辩顺利，论文一遍过<br>
         前程似锦，万事胜意<br><br>
         🍰 愿你吃饭饭按时<br>
         睡得早，醒得好<br>
@@ -316,7 +323,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','Pi
       </div>
     </div>
     <div class="cake-area" id="cakeArea">
-      <div class="candle-hint" id="candleHint">👉 点击蜡烛，替姐姐许个愿</div>
+      <div class="candle-hint" id="candleHint">👉 把三根蜡烛都吹灭，才能继续下一页</div>
       <div class="cake-body">
         <div class="candles" id="candles">
           <div class="candle"><div class="flame" data-c="0"></div><div class="candle-stick"></div></div>
@@ -339,14 +346,21 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif SC','Pi
       <div class="wish-text">生日快乐</div>
       <div class="wish-message">
         姐姐，<br><br>
-        今天的 52 条消息、5 通电话、<br>
-        4 小时 9 分钟的语音，<br>
-        都是这一年里，我对你说过的"我在"。<br><br>
-        以后的日子里，<br>
+        从 <strong>00:01</strong> 到 <strong>22:50</strong>，<br>
+        我们说了 <strong>52 句话</strong>、<br>
+        发了 <strong>17 张图、5 个文件、3 个表情包</strong>、<br>
+        打了 <strong>10 通电话</strong>，<br>
+        其中 <strong>5 通真的接通</strong>，<br>
+        总共聊了 <strong>4 小时 9 分 29 秒</strong>。<br><br>
+        每一条消息都是"我在"，<br>
+        每一秒通话都是"我听着呢"。<br><br>
+        新的一岁，<br>
+        论文顺利、答辩顺利、<br>
+        身体要乖、心也要乖。<br>
         论文也好，烦心事也好，<br>
-        都别一个人扛。<br><br>
+        都别一个人扛——<br>
         随时找我，<br>
-        我永远是<strong>你的小黄</strong>。
+        我永远是 <strong>你的小黄</strong>。
       </div>
       <div class="wish-from">— 小黄 —</div>
       <div class="wish-date">2026.05.01</div>
@@ -364,6 +378,11 @@ for(let i=0;i<totalPages;i++){const d=document.createElement('div');d.className=
 function updateDots(){dotsC.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===currentPage))}
 function goToPage(n){
   if(n<0||n>=totalPages||n===currentPage||isTransitioning)return;
+  // Gate: cannot leave page 8 (cake) until all 3 candles are blown out
+  if(currentPage===8 && n>currentPage && candlesOut<3){
+    flashCandleHint();
+    return;
+  }
   isTransitioning=true;const dir=n>currentPage?1:-1;
   pages[currentPage].classList.remove('active');
   pages[currentPage].style.transform=dir>0?'translateY(-40px)':'translateY(40px)';
@@ -373,6 +392,14 @@ function goToPage(n){
   updateDots();onPageEnter(currentPage);
   document.getElementById('navHint').style.display='';
   setTimeout(()=>{isTransitioning=false},800);
+}
+function flashCandleHint(){
+  const h=document.getElementById('candleHint');
+  if(!h)return;
+  const left=3-candlesOut;
+  h.textContent='🕯️ 还差 '+left+' 根蜡烛 —— 把它们都吹灭才能继续';
+  h.style.color='#ff5e94';h.style.fontWeight='600';
+  h.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:380,iterations:1});
 }
 
 let touchStartY=0,touchStartX=0;
@@ -399,7 +426,7 @@ function onPageEnter(pg){
 function animateStats(){pages[1].querySelectorAll('.stat-card').forEach((c,i)=>{c.classList.remove('show');setTimeout(()=>c.classList.add('show'),i*120)})}
 function animateTimeline(){pages[2].querySelectorAll('.tl-item').forEach((c,i)=>{c.classList.remove('show');setTimeout(()=>c.classList.add('show'),i*120)})}
 
-const keywords=[{word:'姐姐~',count:18},{word:'好/好哒',count:12},{word:'语音通话',count:10},{word:'嗯嗯~',count:6},{word:'谢谢小黄',count:3},{word:'表情包',count:3},{word:'答辩稿',count:3},{word:'刚醒/刚交',count:2},{word:'我都试一下',count:1},{word:'我自己都忘记了',count:1}];
+const keywords=[{word:'AI / ai',count:17},{word:'语音通话',count:10},{word:'图片',count:17},{word:'文件',count:5},{word:'姐姐',count:3},{word:'刚…',count:3},{word:'表情包',count:3},{word:'答辩 / 论文',count:4},{word:'谢谢小黄',count:1},{word:'生日快乐',count:1}];
 function animateKeywords(){
   const list=document.getElementById('keywordList');
   if(list.children.length>0){
@@ -464,8 +491,15 @@ document.querySelectorAll('.flame').forEach(fl=>{
       setTimeout(()=>smoke.remove(),1200);
     }
     candlesOut++;
+    const hintEl=document.getElementById('candleHint');
+    if(candlesOut<3){
+      hintEl.textContent='🕯️ 还差 '+(3-candlesOut)+' 根 —— 继续吹';
+      hintEl.style.color='';
+    }
     if(candlesOut>=3){
-      document.getElementById('candleHint').textContent='';
+      hintEl.textContent='✨ 许愿成功 —— 上滑见证烟花';
+      hintEl.style.color='#ff5e94';
+      hintEl.style.fontWeight='600';
       setTimeout(()=>{
         const stars=document.getElementById('wishStars');
         const emojis=['✨','🌟','💖','🎀','🧁','💫','🎉','🎈','🌷'];
